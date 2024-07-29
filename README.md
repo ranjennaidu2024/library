@@ -21,6 +21,12 @@ http://localhost:8081/h2-console
 
 ### Running the Application using Docker
 
+Make sure you have installed docker on your machine. For more details on Docker Windows Installation steps can refer to:
+
+```
+https://docs.docker.com/desktop/install/windows-install/
+```
+
 1. **Pull the Docker Image from Docker Hub**: docker pull ranjennaidu2024/library:latest
 2. **Run the Docker Container**: docker run -d -p 8081:8081 ranjennaidu2024/library:latest
 3. **Accessing the Application**: You can now access the application API below using the curl command.
@@ -29,6 +35,8 @@ http://localhost:8081/h2-console
 ## API Documentation
 
 For simple api test you can use curl command.
+
+
 To run curl commands on Windows, you need to have the curl utility installed where you can refer to:
 
 ```
