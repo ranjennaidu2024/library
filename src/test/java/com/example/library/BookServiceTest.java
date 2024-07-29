@@ -1,6 +1,7 @@
 package com.example.library;
 
 import com.example.library.model.Book;
+import com.example.library.model.Borrower;
 import com.example.library.repository.BookRepository;
 import com.example.library.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +30,9 @@ class BookServiceTest {
     }
 
     @Test
-    void shouldRegisterBook() {
-        Book book = new Book(null, "1234567890", "Book Title 1", "Author 1", null);
+    void testRegisterBook() {
+        Borrower borrower = new Borrower(1L, "Ranjen Naidu", "ranjen@example.com");
+        Book book = new Book("1234567890", "Book Title 1", "Author 1", borrower);
         when(bookRepository.save(any(Book.class))).thenReturn(book);
 
         Book savedBook = bookService.registerBook(book);
@@ -41,8 +43,9 @@ class BookServiceTest {
     }
 
     @Test
-    void shouldGetBookById() {
-        Book book = new Book(1L, "1234567890", "Book Title 1", "Author 1", null);
+    void testGetBookById() {
+        Borrower borrower = new Borrower(1L, "Ranjen Naidu", "ranjen@example.com");
+        Book book = new Book(1L, "1234567890", "Book Title 1", "Author 1", borrower);
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
 
         Optional<Book> foundBook = bookService.getBookById(1L);

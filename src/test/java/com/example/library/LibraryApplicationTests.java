@@ -1,6 +1,5 @@
 package com.example.library;
 
-import com.example.library.model.Borrower;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,14 +30,14 @@ class LibraryApplicationTests {
     }
 
     @Test
-    void shouldReturnListOfBooks() {
-        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8081/api/books", String.class);
+    void testGetAllBooksReturnsListOfBooks() {
+        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:" + port + "/api/books", String.class);
         assertThat(response.getBody()).contains("Book Title 1");
     }
 
     @Test
-    void shouldReturnListOfBorrowers() {
-        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8081/api/borrowers", String.class);
+    void testGetAllBorrowersReturnsListOfBorrowers() {
+        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:" + port + "/api/borrowers", String.class);
         assertThat(response.getBody()).contains("Ranjen Naidu");
     }
 }

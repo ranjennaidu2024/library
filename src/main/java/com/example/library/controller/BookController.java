@@ -2,7 +2,6 @@ package com.example.library.controller;
 
 import com.example.library.dto.BorrowRequest;
 import com.example.library.model.Book;
-import com.example.library.model.Borrower;
 import com.example.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

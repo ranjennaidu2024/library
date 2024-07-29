@@ -18,14 +18,14 @@ public class DataInitializer implements CommandLineRunner {
     private BorrowerRepository borrowerRepository;
 
     @Override
-    public void run(String... args) throws Exception {
-        // Insert Borrower Data and retrieve the generated IDs
-        Borrower borrower1 = borrowerRepository.save(new Borrower(null, "Ranjen Naidu", "ranjen@example.com"));
-        Borrower borrower2 = borrowerRepository.save(new Borrower(null, "Britney Spears", "britney@example.com"));
+    public void run(String... args) {
+        Borrower borrower1 = new Borrower("Ranjen Naidu", "ranjen@example.com");
+        Borrower borrower2 = new Borrower("Britney Spears", "britney@example.com");
+        borrowerRepository.save(borrower1);
+        borrowerRepository.save(borrower2);
 
-        // Insert Book Data with the borrower IDs
-        Book book1 = new Book(null, "1234567890", "Book Title 1", "Author 1", borrower1);
-        Book book2 = new Book(null, "0987654321", "Book Title 2", "Author 2", borrower2);
+        Book book1 = new Book("1234567890", "Book Title 1", "Author 1", borrower1);
+        Book book2 = new Book("0987654321", "Book Title 2", "Author 2", borrower2);
         bookRepository.save(book1);
         bookRepository.save(book2);
     }

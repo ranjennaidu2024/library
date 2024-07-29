@@ -24,4 +24,11 @@ public class Book {
     
     @OneToOne
     private Borrower borrower;
+
+    public Book(String isbn, String title, String author, Borrower borrower) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.borrower = borrower;
+    }
 }

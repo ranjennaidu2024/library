@@ -29,8 +29,8 @@ class BorrowerServiceTest {
     }
 
     @Test
-    void shouldRegisterBorrower() {
-        Borrower borrower = new Borrower(null, "Ranjen Naidu", "ranjen@example.com");
+    void testRegisterBorrower() {
+        Borrower borrower = new Borrower("Ranjen Naidu", "ranjen@example.com");
         when(borrowerRepository.save(any(Borrower.class))).thenReturn(borrower);
 
         Borrower savedBorrower = borrowerService.registerBorrower(borrower);
@@ -41,7 +41,7 @@ class BorrowerServiceTest {
     }
 
     @Test
-    void shouldGetBorrowerById() {
+    void testGetBorrowerById() {
         Borrower borrower = new Borrower(1L, "Ranjen Naidu", "ranjen@example.com");
         when(borrowerRepository.findById(1L)).thenReturn(Optional.of(borrower));
 

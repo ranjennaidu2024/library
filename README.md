@@ -28,131 +28,80 @@ http://localhost:8081/h2-console
 
 ## API Documentation
 
-### Base URL
+### 1. Register a New Book
 
-```
-http://localhost:8081/api
-```
+**Register a New Book with isbn=1201211234 , title=Harry Potter and Author Name=J.K.Rowling**:
 
-### Register a New Borrower
+curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1201211234\", \"title\":\"Harry Potter\", \"author\":\"J.K.Rowling\"}"
 
-**Endpoint**: `/borrowers`
+### 2. Register a New Borrower
 
-**Method**: `POST`
+**Register a New Borrower with name=Alex Wong and email=alex@example.com**:
 
-**JSON Request Body**:
-{
-    "name": "Alex Wong",
-    "email": "alex@example.com"
-}
-
-
-**Curl Command**:
 curl -X POST "http://localhost:8081/api/borrowers" -H "Content-Type: application/json" -d "{\"name\":\"Alex Wong\", \"email\":\"alex@example.com\"}"
 
-### Register a New Book
 
-**Endpoint**: `/books`
+### 3. Get a List of All Books
 
-**Method**: `POST`
-
-**JSON Request Body**:
-{
-    "isbn": "1231231230",
-    "title": "Book Title 3",
-    "author": "Author 3"
-}
-
-**Curl Command**:
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1231231230\", \"title\":\"Book Title 3\", \"author\":\"Author 3\"}"
-
-### Get a List of All Books
-
-**Endpoint**: `/books`
-
-**Method**: `GET`
-
-**Curl Command**:
 curl -X GET "http://localhost:8081/api/books"
 
-### Get a List of All Borrowers
+### 4. Get a List of All Borrowers
 
-**Endpoint**: `/borrowers`
-
-**Method**: `GET`
-
-**Curl Command**:
 curl -X GET "http://localhost:8081/api/borrowers"
 
-### Borrow a Book
+### 5. Borrow a Book
 
-**Endpoint**: `/books/{bookId}/borrow`
+**Borrow a Book with bookId=3 by a borrower with borrowerId=3**:
 
-**Method**: `POST`
+curl -X POST "http://localhost:8081/api/books/3/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":3}"
 
-**JSON Request Body**:
-{
-    "borrowerId": 1
-}
+### 6. Return a Borrowed Book
 
-**Curl Command**:
-curl -X POST "http://localhost:8081/api/books/1/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":1}"
+**Return a Borrowed Book with bookId=3**:
 
-### Return a Borrowed Book
+curl -X POST "http://localhost:8081/api/books/3/return"
 
-**Endpoint**: `/books/{bookId}/return`
 
-**Method**: `POST`
 
-**Curl Command**:
-curl -X POST "http://localhost:8081/api/books/1/return"
 
 ## Testing the API Requirements
 
 To test the specific requirements related to ISBN and book borrowing:
 
-### Multiple Books with Same Title and Author but Different ISBNs
+### 7. Multiple Books with Same Title and Author but Different ISBNs are considered as different books
 
-**Register Book 1**:
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1111111111\", \"title\":\"Same Title\", \"author\":\"Same Author\"}"
+**Register a New Book with title=Harry Potter and Author Name=J.K.Rowling but different ISBN where isbn=1201211235**:
 
-**Register Book 2**:
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"2222222222\", \"title\":\"Same Title\", \"author\":\"Same Author\"}"
+curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1201211235\", \"title\":\"Harry Potter\", \"author\":\"J.K.Rowling\"}"
 
-### Multiple Books with Same ISBN Number Should Have the Same Title and Author
+Now this will be registered as new book as it is using different ISBNs eventhough the title and author are same with previously registered book.
 
-**Register Book 3**:
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1234567890\", \"title\":\"Correct Title\", \"author\":\"Correct Author\"}"
 
-**Attempt to Register Book with Same ISBN but Different Title/Author**:
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1234567890\", \"title\":\"Wrong Title\", \"author\":\"Wrong Author\"}"
+### 8. Multiple Books with Same ISBN Number Should Have the Same Title and Author
 
-This should fail validation.
+**Attempt to Register Book with Same ISBN where isbn=1201211234,  but Different Title/Author**:
 
-### Multiple Copies of Books with Same ISBN
+curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1201211234\", \"title\":\"Cartoon Network\", \"author\":\"Mr.Bean\"}"
+
+This should fail validation and return "A book with the same ISBN must have the same title and author" message.
+
+### 9. Multiple Copies of Books with Same ISBN are allowed in the system and books allowed to be registered with different ids.
 
 **Register Multiple Copies of a Book**:
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"3333333333\", \"title\":\"Multiple Copies Title\", \"author\":\"Multiple Copies Author\"}"
-curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"3333333333\", \"title\":\"Multiple Copies Title\", \"author\":\"Multiple Copies Author\"}"
 
-### Ensure No More Than One Borrower Borrows the Same Book at the Same Time
+curl -X POST "http://localhost:8081/api/books" -H "Content-Type: application/json" -d "{\"isbn\":\"1201211235\", \"title\":\"Harry Potter\", \"author\":\"J.K.Rowling\"}"
 
-**Borrow Book with ID 1**:
-curl -X POST "http://localhost:8081/api/books/1/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":1}"
+### 10. Ensure No More Than One Borrower Borrows the Same Book at the Same Time
 
-**Attempt to Borrow the Same Book Again**:
-curl -X POST "http://localhost:8081/api/books/1/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":2}"
+**Borrow a Book with bookId=3 by a borrower with borrowerId=3**:
 
-This should fail with an error message indicating the book is already borrowed.
+curl -X POST "http://localhost:8081/api/books/3/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":3}"
 
-### Borrowing and Returning Books
+**Borrower with borrowerId=1 attempt to Borrow the Same Book which was already borrowed by Borrower with borrowerId=3**:
 
-**Borrow a Book**:
-curl -X POST "http://localhost:8081/api/books/2/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":2}"
+curl -X POST "http://localhost:8081/api/books/3/borrow" -H "Content-Type: application/json" -d "{\"borrowerId\":1}"
 
-**Return a Book**:
-curl -X POST "http://localhost:8081/api/books/2/return"
-
+This should fail with an error message "Book is already borrowed" indicating the book is already borrowed.
 
 
 
