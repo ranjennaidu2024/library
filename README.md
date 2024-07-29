@@ -28,6 +28,13 @@ http://localhost:8081/h2-console
 
 ## API Documentation
 
+For simple api test you can use curl command.
+To run curl commands on Windows, you need to have the curl utility installed where you can refer to:
+
+```
+https://kb.naverisk.com/en/articles/5569958-how-to-install-curl-in-windows 
+```
+
 ### 1. Register a New Book
 
 **Register a New Book with isbn=1201211234 , title=Harry Potter and Author Name=J.K.Rowling**:
